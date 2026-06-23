@@ -24,7 +24,7 @@ export function HistoryPage() {
   const historyQuery = useQuery({ queryKey: ['history'], queryFn: historyApi.list })
 
   return (
-    <Card className="border-border/60 bg-zinc-900/40 backdrop-blur-xl shadow-lg relative overflow-hidden">
+    <Card className="glass-card shadow-lg relative overflow-hidden">
       <div className="absolute top-0 left-0 w-1 h-full bg-primary" />
       <CardHeader className="p-4 sm:p-5 border-b border-border/40">
         <div className="flex items-center gap-2">

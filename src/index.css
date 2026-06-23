@@ -5,7 +5,49 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* DEFAULT ROOT: LIGHT THEME */
 :root {
+  color-scheme: light;
+  --background: oklch(0.985 0.004 240);
+  --foreground: oklch(0.20 0.01 240);
+  --card: oklch(0.995 0.002 240);
+  --card-foreground: oklch(0.20 0.01 240);
+  --popover: oklch(1.0 0.0 0);
+  --popover-foreground: oklch(0.20 0.01 240);
+  
+  /* Vibrant Deep Violet/Indigo for contrast in light mode */
+  --primary: oklch(0.56 0.20 265);
+  --primary-foreground: oklch(0.99 0.002 240);
+  
+  --secondary: oklch(0.945 0.005 240);
+  --secondary-foreground: oklch(0.20 0.01 240);
+  --muted: oklch(0.945 0.005 240);
+  --muted-foreground: oklch(0.48 0.01 240);
+  --accent: oklch(0.925 0.008 240);
+  --accent-foreground: oklch(0.18 0.01 240);
+  --destructive: oklch(0.55 0.22 25);
+  --border: oklch(0.88 0.006 240);
+  --input: oklch(0.965 0.004 240);
+  --ring: oklch(0.56 0.20 265);
+  --chart-1: oklch(0.56 0.20 265);
+  --chart-2: oklch(0.68 0.16 160);
+  --chart-3: oklch(0.72 0.14 40);
+  --chart-4: oklch(0.78 0.13 230);
+  --chart-5: oklch(0.68 0.15 300);
+  --radius: 0.75rem;
+  
+  --sidebar: oklch(0.965 0.004 240);
+  --sidebar-foreground: oklch(0.20 0.01 240);
+  --sidebar-primary: oklch(0.56 0.20 265);
+  --sidebar-primary-foreground: oklch(0.99 0.002 240);
+  --sidebar-accent: oklch(0.925 0.008 240);
+  --sidebar-accent-foreground: oklch(0.18 0.01 240);
+  --sidebar-border: oklch(0.89 0.006 240);
+  --sidebar-ring: oklch(0.56 0.20 265);
+}
+
+/* OVERRIDES: DARK THEME */
+.dark {
   color-scheme: dark;
   --background: oklch(0.085 0.012 240);
   --foreground: oklch(0.97 0.005 240);
@@ -14,7 +56,7 @@
   --popover: oklch(0.11 0.015 240);
   --popover-foreground: oklch(0.97 0.005 240);
   
-  /* Electric Purple/Indigo Accent for high-end developer aesthetic */
+  /* Electric Purple/Indigo Accent for dark mode */
   --primary: oklch(0.64 0.19 265);
   --primary-foreground: oklch(0.98 0.005 240);
   
@@ -29,11 +71,6 @@
   --input: oklch(0.13 0.012 240 / 80%);
   --ring: oklch(0.64 0.19 265);
   --chart-1: oklch(0.64 0.19 265);
-  --chart-2: oklch(0.68 0.16 160);
-  --chart-3: oklch(0.72 0.14 40);
-  --chart-4: oklch(0.78 0.13 230);
-  --chart-5: oklch(0.68 0.15 300);
-  --radius: 0.75rem;
   
   --sidebar: oklch(0.095 0.012 240);
   --sidebar-foreground: oklch(0.95 0.005 240);
@@ -43,10 +80,6 @@
   --sidebar-accent-foreground: oklch(0.97 0.005 240);
   --sidebar-border: oklch(0.18 0.015 240 / 60%);
   --sidebar-ring: oklch(0.64 0.19 265);
-}
-
-.dark {
-  color-scheme: dark;
 }
 
 @theme inline {
@@ -133,14 +166,25 @@
 
 /* Glassmorphism utility classes */
 .glass-panel {
-  background: rgba(17, 20, 28, 0.7);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.dark .glass-panel {
+  background: rgba(17, 20, 28, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .glass-card {
-  background: linear-gradient(135deg, rgba(23, 27, 40, 0.8) 0%, rgba(15, 18, 28, 0.9) 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(245, 245, 245, 0.95) 100%);
   backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+}
+
+.dark .glass-card {
+  background: linear-gradient(135deg, rgba(23, 27, 40, 0.8) 0%, rgba(15, 18, 28, 0.9) 100%);
   border: 1px solid rgba(255, 255, 255, 0.06);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 }
@@ -151,8 +195,12 @@
 
 .glass-card-hover:hover {
   border-color: rgba(102, 93, 232, 0.3);
-  box-shadow: 0 8px 40px rgba(102, 93, 232, 0.1);
+  box-shadow: 0 8px 40px rgba(102, 93, 232, 0.08);
   transform: translateY(-2px);
+}
+
+.dark .glass-card-hover:hover {
+  box-shadow: 0 8px 40px rgba(102, 93, 232, 0.15);
 }
 
 /* Glow effects */

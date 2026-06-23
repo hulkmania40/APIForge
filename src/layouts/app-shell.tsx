@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ChevronRight, History, LayoutDashboard, Settings, SidebarClose, SidebarOpen, Folder, FolderPlus, Plus, PlusCircle, Database, ChevronDown, Check, Braces, Sparkles, FolderTree, ArrowRight, User } from 'lucide-react'
+import { ChevronRight, History, LayoutDashboard, Settings, SidebarClose, SidebarOpen, Folder, FolderPlus, Plus, PlusCircle, Database, ChevronDown, Check, Braces, Sparkles, FolderTree, ArrowRight, User, Sun, Moon } from 'lucide-react'
 import { NavLink, Outlet, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { Badge } from '@/components/ui/badge'
@@ -11,11 +11,11 @@ import { useUiStore } from '@/stores/ui-store'
 import type { CollectionFolderModel, CollectionModel } from '@/types/models'
 
 const methodBadgeColors: Record<string, string> = {
-  GET: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25',
-  POST: 'bg-amber-500/10 text-amber-400 border-amber-500/25',
-  PUT: 'bg-sky-500/10 text-sky-400 border-sky-500/25',
-  PATCH: 'bg-indigo-500/10 text-indigo-400 border-indigo-500/25',
-  DELETE: 'bg-rose-500/10 text-rose-400 border-rose-500/25',
+  GET: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/25',
+  POST: 'bg-amber-500/10 text-amber-400 border-amber-500/25 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/25',
+  PUT: 'bg-sky-500/10 text-sky-400 border-sky-500/25 dark:bg-sky-500/10 dark:text-sky-400 dark:border-sky-500/25',
+  PATCH: 'bg-indigo-500/10 text-indigo-400 border-indigo-500/25 dark:bg-indigo-500/10 dark:text-indigo-400 dark:border-indigo-500/25',
+  DELETE: 'bg-rose-500/10 text-rose-400 border-rose-500/25 dark:bg-rose-500/10 dark:text-rose-400 dark:border-rose-500/25',
 }
 
 function WorkspaceCollectionTree({ collections }: { collections: CollectionModel[] }) {
@@ -96,6 +96,8 @@ export function AppShell() {
   const toggleSidebar = useUiStore((state) => state.toggleSidebar)
   const activeWorkspaceId = useUiStore((state) => state.activeWorkspaceId)
   const setActiveWorkspaceId = useUiStore((state) => state.setActiveWorkspaceId)
+  const theme = useUiStore((state) => state.theme)
+  const toggleTheme = useUiStore((state) => state.toggleTheme)
   
   const [explorerCollapsed, setExplorerCollapsed] = useState(false)
   const [isWorkspaceSelectOpen, setIsWorkspaceSelectOpen] = useState(false)
@@ -201,12 +203,12 @@ export function AppShell() {
     <div className="flex h-screen w-screen overflow-hidden bg-background text-foreground">
       
       {/* 1. Sleek Navigation Aside Panel (VSCode-Style) */}
-      <aside className={`flex h-full flex-col border-r border-border/60 bg-zinc-950/70 backdrop-blur-xl shrink-0 transition-all duration-200 ${sidebarCollapsed ? 'w-14' : 'w-56'}`}>
+      <aside className={`flex h-full flex-col border-r border-border/60 bg-zinc-950/5 dark:bg-zinc-950/70 backdrop-blur-xl shrink-0 transition-all duration-200 ${sidebarCollapsed ? 'w-14' : 'w-56'}`}>
         {/* Brand Header */}
         <div className="flex h-14 items-center justify-between px-3 border-b border-border/40">
           {!sidebarCollapsed ? (
             <div className="flex items-center gap-2 px-1">
-              <div className="size-6 rounded-lg bg-gradient-to-tr from-primary to-violet-500 flex items-center justify-center shadow-lg shadow-primary/20">
+              <div className="size-6 rounded-lg bg-gradient-to-tr from-primary to-violet-500 flex items-center justify-center shadow-lg shadow-primary/25">
                 <Sparkles className="size-3 text-white" />
               </div>
               <span className="font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-sm">
@@ -214,7 +216,7 @@ export function AppShell() {
               </span>
             </div>
           ) : (
-            <div className="mx-auto size-6 rounded-lg bg-gradient-to-tr from-primary to-violet-500 flex items-center justify-center shadow-lg shadow-primary/20">
+            <div className="mx-auto size-6 rounded-lg bg-gradient-to-tr from-primary to-violet-500 flex items-center justify-center shadow-lg shadow-primary/25">
               <Sparkles className="size-3 text-white" />
             </div>
           )}
@@ -284,6 +286,7 @@ export function AppShell() {
             <NavLink
               key={item.to}
               to={item.to}
+              end={item.label === 'Workspace'}
               className={({ isActive }) =>
                 [
                   'flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-xs font-medium transition-all duration-150',
@@ -312,7 +315,7 @@ export function AppShell() {
       </aside>
 
       {/* 2. Secondary Explorer Sidebar (Collections/Workspace details) */}
-      <div className={`h-full border-r border-border/60 bg-zinc-950/20 backdrop-blur-md flex-col shrink-0 transition-all duration-200 ${explorerCollapsed ? 'w-0 overflow-hidden' : 'w-72 flex'}`}>
+      <div className={`h-full border-r border-border/60 bg-zinc-950/2 dark:bg-zinc-950/20 backdrop-blur-md flex-col shrink-0 transition-all duration-200 ${explorerCollapsed ? 'w-0 overflow-hidden' : 'w-72 flex'}`}>
         {explorerPanel}
       </div>
 
@@ -341,7 +344,7 @@ export function AppShell() {
             </div>
           </div>
           
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             {/* Active Environment Indicator Selector */}
             <div className="flex items-center gap-2 rounded-lg border border-border/80 bg-background/40 px-2.5 py-1 text-xs">
               <Database className="size-3.5 text-primary" />
@@ -356,6 +359,21 @@ export function AppShell() {
                 <option value="Production" className="bg-popover text-foreground">Production</option>
               </select>
             </div>
+
+            {/* Sleek Theme Switcher Button */}
+            <Button
+              variant="outline"
+              size="icon-xs"
+              className="rounded-lg border-border hover:bg-accent/40 size-8 transition-all shrink-0"
+              onClick={toggleTheme}
+              title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
+            >
+              {theme === 'light' ? (
+                <Moon className="size-4 text-muted-foreground" />
+              ) : (
+                <Sun className="size-4 text-amber-500" />
+              )}
+            </Button>
           </div>
         </header>
 

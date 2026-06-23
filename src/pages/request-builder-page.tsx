@@ -2,14 +2,12 @@ import { useMemo, useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { Clock3, Copy, FolderTree, Send, Shield, TimerReset, Save, Plus, Trash2, CheckCircle2, AlertTriangle, Cpu } from 'lucide-react'
-import { mockResponse } from '@/mocks/data'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select } from '@/components/ui/select'
-import { Separator } from '@/components/ui/separator'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
@@ -51,21 +49,21 @@ function JSONColorizer({ jsonString }: { jsonString: string }) {
       if (/^"/.test(part)) {
         if (/:$/.test(part)) {
           // Key
-          tokens.push(<span key={key} className="text-sky-400 font-semibold">{part.slice(0, -1)}</span>);
+          tokens.push(<span key={key} className="text-sky-600 dark:text-sky-400 font-semibold">{part.slice(0, -1)}</span>);
           tokens.push(<span key={`${key}-colon`} className="text-muted-foreground/80">:</span>);
         } else {
           // String value
-          tokens.push(<span key={key} className="text-emerald-400">{part}</span>);
+          tokens.push(<span key={key} className="text-emerald-600 dark:text-emerald-400">{part}</span>);
         }
       } else if (/^(true|false|null)$/.test(part)) {
         // Boolean or Null
-        tokens.push(<span key={key} className="text-indigo-400 font-bold">{part}</span>);
+        tokens.push(<span key={key} className="text-indigo-600 dark:text-indigo-400 font-bold">{part}</span>);
       } else if (/^-?\d/.test(part)) {
         // Number
-        tokens.push(<span key={key} className="text-amber-400 font-semibold">{part}</span>);
+        tokens.push(<span key={key} className="text-amber-600 dark:text-amber-400 font-semibold">{part}</span>);
       } else if (/^[{}[\],]/.test(part)) {
         // Punctuation
-        tokens.push(<span key={key} className="text-muted-foreground/80">{part}</span>);
+        tokens.push(<span key={key} className="text-muted-foreground/60 dark:text-muted-foreground/80">{part}</span>);
       } else {
         // Whitespace
         tokens.push(<span key={key}>{part}</span>);
@@ -243,7 +241,7 @@ function RequestBuilderContent({ request }: { request: ApiRequestModel | null })
       <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr] items-start">
         
         {/* REQUEST CONFIGURATION TABBED CARD */}
-        <Card className="border-border/60 bg-zinc-900/40 backdrop-blur-xl shadow-lg min-h-[500px]">
+        <Card className="border-border/60 bg-zinc-900/40 backdrop-blur-xl shadow-lg min-h-125">
           <CardHeader className="p-4 sm:p-5 border-b border-border/40 flex flex-row items-center justify-between">
             <div>
               <CardTitle className="text-sm font-semibold tracking-wide uppercase text-muted-foreground/80 flex items-center gap-1.5">
@@ -370,7 +368,7 @@ function RequestBuilderContent({ request }: { request: ApiRequestModel | null })
                 </div>
                 
                 {/* Tabs for Response details */}
-                <Tabs defaultValue="body-view" className="flex-1 flex flex-col">
+                <Tabs defaultValue="body-view">
                   <TabsList className="bg-background/40 border border-border/80 p-0.5 rounded-lg h-8 self-start">
                     <TabsTrigger value="body-view" className="text-xs px-3 h-7 rounded-md">Body</TabsTrigger>
                     <TabsTrigger value="headers-view" className="text-xs px-3 h-7 rounded-md">Headers ({response.headers.length})</TabsTrigger>

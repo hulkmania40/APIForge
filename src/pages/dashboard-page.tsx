@@ -30,7 +30,7 @@ export function DashboardPage() {
     <div className="space-y-6">
       
       {/* Welcome Card Panel */}
-      <Card className="border-border/60 bg-zinc-900/40 backdrop-blur-xl relative overflow-hidden shadow-lg">
+      <Card className="glass-card relative overflow-hidden shadow-lg">
         <div className="absolute -right-16 -top-16 w-48 h-48 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
         <CardHeader className="pb-4">
           <div className="flex items-center gap-2 text-xs text-primary font-bold uppercase tracking-widest">
@@ -66,7 +66,7 @@ export function DashboardPage() {
       <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
         
         {/* Recent Workspaces Card */}
-        <Card className="border-border/60 bg-zinc-900/40 backdrop-blur-xl shadow-lg">
+        <Card className="glass-card shadow-lg">
           <CardHeader className="border-b border-border/40 pb-4">
             <div className="flex items-center justify-between">
               <div>
@@ -116,7 +116,7 @@ export function DashboardPage() {
         </Card>
 
         {/* Recent Requests Card */}
-        <Card className="border-border/60 bg-zinc-900/40 backdrop-blur-xl shadow-lg">
+        <Card className="glass-card shadow-lg">
           <CardHeader className="border-b border-border/40 pb-4">
             <CardTitle className="text-base font-bold">Recent Requests</CardTitle>
             <CardDescription className="text-xs">Executed requests across the workspace.</CardDescription>
