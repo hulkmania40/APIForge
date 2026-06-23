@@ -36,7 +36,7 @@ export function WorkspacePage() {
     <div className="space-y-6">
       
       {/* Workspace banner card */}
-      <Card className="border-border/60 bg-background/70 dark:bg-zinc-950/70 backdrop-blur-xl relative overflow-hidden shadow-lg">
+      <Card className="border-border/60 bg-background/70 dark:bg-zinc-950/70 relative overflow-hidden">
         <div 
           className="absolute right-0 top-0 w-32 h-32 blur-3xl opacity-20 rounded-full pointer-events-none"
           style={{ backgroundColor: workspaceQuery.data?.color ?? 'var(--primary)' }}
@@ -65,7 +65,7 @@ export function WorkspacePage() {
       <div className="grid gap-6 lg:grid-cols-2">
         
         {/* Getting started panel */}
-        <Card className="border-border/60 bg-background/70 dark:bg-zinc-950/70 backdrop-blur-xl shadow-lg">
+        <Card className="border-border/60 bg-background/70 dark:bg-zinc-950/70">
           <CardHeader className="border-b border-border/40 pb-4">
             <CardTitle className="text-base font-bold flex items-center gap-2">
               <Cpu className="size-4 text-primary" />
@@ -104,7 +104,7 @@ export function WorkspacePage() {
         </Card>
 
         {/* Latest workspace endpoints */}
-        <Card className="border-border/60 bg-background/70 dark:bg-zinc-950/70 backdrop-blur-xl shadow-lg">
+        <Card className="border-border/60 bg-background/70 dark:bg-zinc-950/70">
           <CardHeader className="border-b border-border/40 pb-4">
             <CardTitle className="text-base font-bold flex items-center gap-2">
               <Sparkles className="size-4 text-sky-400" />

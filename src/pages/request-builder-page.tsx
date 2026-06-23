@@ -2,25 +2,17 @@ import { useMemo, useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { Clock3, Copy, FolderTree, Send, Shield, TimerReset, Save, Plus, Trash2, CheckCircle2, Cpu } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { CardDescription, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select } from '@/components/ui/select'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
+import { getApiMethodChipClasses } from '@/lib/utils'
 import { requestsApi } from '@/services/requests'
 import type { ApiRequestModel, KeyValueRow, ResponseModel } from '@/types/models'
-
-const methodColors: Record<ApiRequestModel['method'], 'success' | 'warning' | 'default' | 'danger'> = {
-  GET: 'success',
-  POST: 'warning',
-  PUT: 'default',
-  PATCH: 'default',
-  DELETE: 'danger',
-}
 
 const methodSelectTextColors: Record<ApiRequestModel['method'], string> = {
   GET: 'text-emerald-400 font-bold',
@@ -166,14 +158,14 @@ function RequestBuilderContent({ request }: { request: ApiRequestModel | null })
     <div className="space-y-4 max-w-full">
       
       {/* 1. Request Address and Method Bar Card */}
-      <Card className="border-border/60 bg-zinc-900/50 backdrop-blur-xl shadow-lg relative overflow-hidden">
-        <CardHeader className="p-4 sm:p-5 space-y-4">
+      <section className="border border-border/60 relative overflow-hidden">
+        <div className="p-4 sm:p-5 space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <CardTitle className="flex items-center gap-2 text-base font-semibold">
-                <Badge tone={methodColors[selectedRequest.method]} className="px-2 py-0.5 rounded text-[10px] tracking-wide font-black uppercase font-mono">
+                <span className={`inline-flex items-center justify-center rounded-md border px-2.5 py-0.5 text-[10px] font-black uppercase tracking-[0.22em] leading-none font-mono ${getApiMethodChipClasses(selectedRequest.method)}`}>
                   {selectedRequest.method}
-                </Badge>
+                </span>
                 <span className="text-foreground tracking-tight text-lg">{selectedRequest.name}</span>
               </CardTitle>
               <CardDescription className="text-xs text-muted-foreground/80 font-mono mt-0.5 break-all">
@@ -194,7 +186,7 @@ function RequestBuilderContent({ request }: { request: ApiRequestModel | null })
           </div>
 
           {/* Unified URL Input Group */}
-          <div className="flex items-center border border-border bg-card/95 dark:bg-zinc-950/60 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary/40 transition-all duration-200">
+          <div className="flex items-center border border-border bg-transparent rounded-none overflow-hidden focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary/40 transition-all duration-200">
             <select 
               value={selectedRequest.method} 
               onChange={(event) => setDraft((current) => (current ? { ...current, method: event.target.value as ApiRequestModel['method'] } : current))}
@@ -233,25 +225,25 @@ function RequestBuilderContent({ request }: { request: ApiRequestModel | null })
               )}
             </Button>
           </div>
-        </CardHeader>
-      </Card>
+        </div>
+      </section>
 
       {/* 2. Side-By-Side Request Config and Response Area */}
       <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr] items-start">
         
         {/* REQUEST CONFIGURATION TABBED CARD */}
-        <Card className="border-border/60 bg-card/95 dark:bg-zinc-950/70 backdrop-blur-xl shadow-lg min-h-125">
-          <CardHeader className="p-4 sm:p-5 border-b border-border/40 flex flex-row items-center justify-between">
+        <section className="border border-border/60 min-h-125">
+          <div className="p-4 sm:p-5 border-b border-border/40 flex flex-row items-center justify-between">
             <div>
               <CardTitle className="text-sm font-semibold tracking-wide uppercase text-muted-foreground/80 flex items-center gap-1.5">
                 <Cpu className="size-3.5 text-primary" />
                 Request Configuration
               </CardTitle>
             </div>
-          </CardHeader>
-          <CardContent className="p-4 sm:p-5">
+          </div>
+          <div className="p-4 sm:p-5">
             <Tabs value={activeTab} defaultValue="params" onValueChange={setActiveTab}>
-              <TabsList className="bg-card/90 dark:bg-zinc-950/60 border border-border/80 p-0.5 rounded-lg h-9">
+              <TabsList className="border-b border-border/60 p-0 h-9 rounded-none bg-transparent">
                 <TabsTrigger value="params" className="text-xs px-4 h-8 rounded-md transition-all">Params</TabsTrigger>
                 <TabsTrigger value="headers" className="text-xs px-4 h-8 rounded-md transition-all">Headers</TabsTrigger>
                 <TabsTrigger value="auth" className="text-xs px-4 h-8 rounded-md transition-all">Auth</TabsTrigger>
@@ -281,7 +273,7 @@ function RequestBuilderContent({ request }: { request: ApiRequestModel | null })
               </TabsContent>
 
               <TabsContent value="auth" className="mt-4 focus-visible:outline-none">
-                <div className="grid gap-4 max-w-md bg-card/85 dark:bg-zinc-950/55 p-4 rounded-xl border border-border/50">
+                <div className="grid gap-4 max-w-md border border-border/50 p-4 bg-transparent rounded-none">
                   <div className="space-y-2">
                     <Label className="text-xs text-muted-foreground/80 font-medium">Authorization type</Label>
                     <Select value={selectedRequest.authType} onChange={(event) => setDraft((current) => (current ? { ...current, authType: event.target.value as ApiRequestModel['authType'] } : current))}>
@@ -296,7 +288,7 @@ function RequestBuilderContent({ request }: { request: ApiRequestModel | null })
                         value={selectedRequest.token ?? ''} 
                         onChange={(event) => setDraft((current) => (current ? { ...current, token: event.target.value } : current))} 
                         placeholder="Paste bearer token here"
-                        className="font-mono text-xs bg-card/90 dark:bg-zinc-950/60"
+                        className="font-mono text-xs bg-transparent"
                       />
                     </div>
                   ) : (
@@ -315,7 +307,7 @@ function RequestBuilderContent({ request }: { request: ApiRequestModel | null })
                     <span className="font-mono text-[10px]">application/json</span>
                   </div>
                   <Textarea 
-                    className="min-h-70 font-mono text-xs bg-card/90 dark:bg-zinc-950/60 border-border/80 focus:border-primary/40 focus:ring-primary/20 placeholder:text-muted-foreground/30 leading-relaxed rounded-xl" 
+                    className="min-h-70 font-mono text-xs bg-transparent border-border/80 focus:border-primary/40 focus:ring-primary/20 placeholder:text-muted-foreground/30 leading-relaxed rounded-none" 
                     value={selectedRequest.body} 
                     onChange={(event) => setDraft((current) => (current ? { ...current, body: event.target.value } : current))} 
                     placeholder='{\n  "key": "value"\n}' 
@@ -323,21 +315,21 @@ function RequestBuilderContent({ request }: { request: ApiRequestModel | null })
                 </div>
               </TabsContent>
             </Tabs>
-          </CardContent>
-        </Card>
+          </div>
+        </section>
 
         {/* RESPONSE PREVIEW CARD */}
-        <Card className="border-border/60 bg-card/95 dark:bg-zinc-950/70 backdrop-blur-xl shadow-lg min-h-125 flex flex-col">
-          <CardHeader className="p-4 sm:p-5 border-b border-border/40">
+        <section className="border border-border/60 min-h-125 flex flex-col">
+          <div className="p-4 sm:p-5 border-b border-border/40">
             <CardTitle className="text-sm font-semibold tracking-wide uppercase text-muted-foreground/80 flex items-center gap-1.5">
               <CheckCircle2 className="size-3.5 text-primary" />
               Response Viewer
             </CardTitle>
-          </CardHeader>
+          </div>
           
-          <CardContent className="p-4 sm:p-5 flex-1 flex flex-col justify-start">
+          <div className="p-4 sm:p-5 flex-1 flex flex-col justify-start">
             {response === null ? (
-              <div className="grow flex flex-col items-center justify-center text-center p-8 border border-dashed border-border/60 rounded-xl bg-card/85 dark:bg-zinc-950/55 h-90">
+              <div className="grow flex flex-col items-center justify-center text-center p-8 border border-dashed border-border/60 rounded-none bg-transparent h-90">
                 <Send className="size-8 text-muted-foreground/40 mb-3 animate-pulse" />
                 <h3 className="text-sm font-semibold text-foreground/80">Execute Request</h3>
                 <p className="text-xs text-muted-foreground/80 mt-1 max-w-xs leading-relaxed">
@@ -368,13 +360,13 @@ function RequestBuilderContent({ request }: { request: ApiRequestModel | null })
                 
                 {/* Tabs for Response details */}
                 <Tabs defaultValue="body-view">
-                  <TabsList className="bg-card/90 dark:bg-zinc-950/60 border border-border/80 p-0.5 rounded-lg h-8 self-start">
+                  <TabsList className="border-b border-border/60 p-0 h-8 self-start rounded-none bg-transparent">
                     <TabsTrigger value="body-view" className="text-xs px-3 h-7 rounded-md">Body</TabsTrigger>
                     <TabsTrigger value="headers-view" className="text-xs px-3 h-7 rounded-md">Headers ({response.headers.length})</TabsTrigger>
                   </TabsList>
                   
                   <TabsContent value="body-view" className="mt-3 flex-1 flex flex-col min-h-65 focus-visible:outline-none">
-                    <div className="relative grow flex flex-col rounded-xl border border-border/80 bg-card/95 dark:bg-zinc-950/60 overflow-hidden">
+                    <div className="relative grow flex flex-col rounded-none border border-border/80 bg-transparent overflow-hidden">
                       <div className="absolute top-2 right-2 z-10">
                         <Button 
                           variant="ghost" 
@@ -393,7 +385,7 @@ function RequestBuilderContent({ request }: { request: ApiRequestModel | null })
                   </TabsContent>
                   
                   <TabsContent value="headers-view" className="mt-3 focus-visible:outline-none">
-                    <div className="overflow-hidden rounded-xl border border-border/85 bg-card/90 dark:bg-zinc-950/55">
+                    <div className="overflow-hidden rounded-none border border-border/85 bg-transparent">
                       <Table>
                         <TableHeader>
                           <TableRow className="border-b border-border/60 hover:bg-transparent">
@@ -415,8 +407,8 @@ function RequestBuilderContent({ request }: { request: ApiRequestModel | null })
                 </Tabs>
               </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </section>
       </div>
     </div>
   )
@@ -434,10 +426,10 @@ interface EditableRowsProps {
 function EditableRows({ rows, onAdd, onRemove, onChange, placeholderKey, placeholderValue }: EditableRowsProps) {
   return (
     <div className="space-y-3">
-      <div className="overflow-hidden rounded-xl border border-border bg-card/85 dark:bg-zinc-950/55">
+      <div className="overflow-hidden rounded-none border border-border bg-transparent">
         <Table>
           <TableHeader>
-            <TableRow className="border-b border-border/60 hover:bg-transparent bg-card/90 dark:bg-zinc-950/55">
+            <TableRow className="border-b border-border/60 hover:bg-transparent">
               <TableHead className="w-12 text-[11px] font-bold text-muted-foreground/80 text-center py-2">On</TableHead>
               <TableHead className="text-[11px] font-bold text-muted-foreground/80 py-2">Key</TableHead>
               <TableHead className="text-[11px] font-bold text-muted-foreground/80 py-2">Value</TableHead>
@@ -524,7 +516,7 @@ function Metric({ label, value, status, icon }: { label: string; value: string; 
   }, [status])
 
   return (
-    <div className={`rounded-xl border border-border bg-card/90 dark:bg-zinc-950/60 p-2.5 flex flex-col justify-between ${status !== undefined ? statusColor : ''}`}>
+    <div className={`rounded-none border border-border bg-transparent p-2.5 flex flex-col justify-between ${status !== undefined ? statusColor : ''}`}>
       <div className="flex items-center justify-between text-[10px] text-muted-foreground/80 font-medium uppercase tracking-wider">
         <span>{label}</span>
         {icon}
@@ -536,17 +528,17 @@ function Metric({ label, value, status, icon }: { label: string; value: string; 
 
 function EmptyRequestState() {
   return (
-    <Card className="border-border/60 bg-card/95 dark:bg-zinc-950/70 backdrop-blur-xl p-8 max-w-md mx-auto text-center mt-12 shadow-lg">
-      <CardHeader className="pb-2">
+    <div className="border border-border/60 p-8 max-w-md mx-auto text-center mt-12">
+      <div className="pb-2">
         <FolderTree className="size-10 text-primary/60 mx-auto mb-2 animate-bounce" />
         <CardTitle className="text-lg font-semibold text-foreground">No Request Opened</CardTitle>
         <CardDescription className="text-xs text-muted-foreground">
           Select an API request from the collections explorer sidebar to open the Request Studio.
         </CardDescription>
-      </CardHeader>
-      <CardContent className="pt-2 text-xs text-muted-foreground/75 leading-relaxed">
+      </div>
+      <div className="pt-2 text-xs text-muted-foreground/75 leading-relaxed">
         The Request Studio allows you to customize the HTTP method, request parameters, headers, authorization details, and body payload, and executes live mock responses instantly.
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }

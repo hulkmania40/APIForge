@@ -17,7 +17,7 @@ export function SettingsPage() {
     <div className="space-y-6">
       
       {/* Settings Header Panel */}
-      <Card className="border-border/60 bg-background/70 dark:bg-zinc-950/70 backdrop-blur-xl relative overflow-hidden shadow-lg">
+      <Card className="border-border/60 bg-background/70 dark:bg-zinc-950/70 relative overflow-hidden">
         <CardHeader>
           <div className="flex items-center gap-2">
             <Settings className="size-4 text-primary" />
@@ -42,7 +42,7 @@ export function SettingsPage() {
       <div className="grid gap-6 xl:grid-cols-2">
         
         {/* Members Management */}
-        <Card className="border-border/60 bg-background/70 dark:bg-zinc-950/70 backdrop-blur-xl shadow-lg">
+        <Card className="border-border/60 bg-background/70 dark:bg-zinc-950/70">
           <CardHeader className="border-b border-border/40 pb-4">
             <div className="flex items-center justify-between">
               <div>
@@ -83,7 +83,7 @@ export function SettingsPage() {
         </Card>
 
         {/* Invitations Management */}
-        <Card className="border-border/60 bg-background/70 dark:bg-zinc-950/70 backdrop-blur-xl shadow-lg">
+        <Card className="border-border/60 bg-background/70 dark:bg-zinc-950/70">
           <CardHeader className="border-b border-border/40 pb-4">
             <CardTitle className="text-base font-bold">Pending Invitations</CardTitle>
             <CardDescription className="text-xs">Outstanding and accepted team invitations.</CardDescription>

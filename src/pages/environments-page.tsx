@@ -48,7 +48,7 @@ export function EnvironmentsPage() {
   }
 
   return (
-    <Card className="glass-card shadow-lg relative overflow-hidden">
+    <Card className="glass-card relative overflow-hidden">
       <CardHeader className="p-4 sm:p-5 border-b border-border/40 flex flex-row items-center justify-between flex-wrap gap-4">
         <div>
           <CardTitle className="text-lg font-bold flex items-center gap-2">

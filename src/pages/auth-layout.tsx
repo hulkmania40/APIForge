@@ -16,7 +16,7 @@ export function AuthLayout({ title, description, children, footer }: AuthLayoutP
         <div className="grid w-full gap-8 lg:grid-cols-[1.1fr_0.9fr] items-stretch">
           
           {/* Left Branding Area */}
-          <div className="flex flex-col justify-between space-y-8 rounded-4xl border border-border/60 bg-card/95 dark:bg-zinc-950/40 p-8 backdrop-blur-xl relative overflow-hidden">
+          <div className="flex flex-col justify-between space-y-8 rounded-4xl border border-border/60 bg-card/95 dark:bg-zinc-950/40 p-8 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
             
             {/* Header / Logo */}
@@ -64,7 +64,7 @@ export function AuthLayout({ title, description, children, footer }: AuthLayoutP
           </div>
 
           {/* Right Form Card Panel */}
-          <div className="rounded-4xl border border-border/60 bg-card/95 dark:bg-zinc-950/40 backdrop-blur-xl shadow-2xl p-6 sm:p-8 flex flex-col justify-between min-h-110">
+          <div className="rounded-4xl border border-border/60 bg-card/95 dark:bg-zinc-950/40 p-6 sm:p-8 flex flex-col justify-between min-h-110">
             <div>
               <div className="mb-6">
                 <h2 className="text-xl font-bold tracking-tight">Credentials</h2>

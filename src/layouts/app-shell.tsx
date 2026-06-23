@@ -73,13 +73,13 @@ function FolderNode({ folder }: { folder: CollectionFolderModel }) {
               [
                 'flex items-center justify-between gap-2 rounded-lg px-2.5 py-1 text-xs transition-all duration-150 group/item border',
                 isActive 
-                  ? 'bg-primary/10 border-primary/20 text-foreground font-medium shadow-[inset_0_1px_0_0_rgba(255,255,255,0.02)]' 
+                  ? 'bg-primary/10 border-primary/20 text-foreground font-medium' 
                   : 'border-transparent text-muted-foreground hover:bg-accent/30 hover:text-foreground',
               ].join(' ')
             }
           >
             <div className="flex items-center gap-2 truncate">
-              <span className={`text-[9px] font-bold font-mono px-1 py-0.2 rounded border shrink-0 min-w-[34px] text-center ${methodBadgeColors[request.method] || 'bg-muted text-muted-foreground border-border'}`}>
+              <span className={`text-[9px] font-bold font-mono px-1 py-0.2 rounded border shrink-0 min-w-8.5 text-center ${methodBadgeColors[request.method] || 'bg-muted text-muted-foreground border-border'}`}>
                 {request.method}
               </span>
               <span className="truncate">{request.name}</span>
@@ -134,15 +134,15 @@ export function AppShell() {
 
   // explorer sidebar header/content
   const explorerPanel = (
-    <div className="flex min-h-0 flex-col rounded-xl border border-border/40 bg-background/20 backdrop-blur-md">
-      <div className="flex items-center justify-between px-4 py-3 shrink-0">
+    <div className="flex min-h-0 flex-col">
+      <div className="flex items-center justify-between px-2 py-2 shrink-0 border-b border-border/30">
         <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">
           {isWorkspaceRoute ? 'Collections' : 'Quick Explorer'}
         </h2>
         {isWorkspaceRoute && (
           <button 
             type="button" 
-            className="text-muted-foreground hover:text-foreground hover:bg-accent/40 rounded p-1 transition-all"
+            className="text-muted-foreground hover:text-foreground transition-colors p-1"
             onClick={() => alert('Create new Collection flow')}
             title="Create Collection"
           >
@@ -151,10 +151,10 @@ export function AppShell() {
         )}
       </div>
       
-      <div className="flex-1 overflow-y-auto px-2 pb-2">
+      <div className="flex-1 overflow-y-auto px-1 py-2">
         {isWorkspaceRoute ? (
           collectionsQuery.isLoading ? (
-            <div className="space-y-2 p-2">
+            <div className="space-y-2 px-1">
               <div className="h-6 animate-pulse rounded bg-muted/60" />
               <div className="h-6 animate-pulse rounded bg-muted/60" />
               <div className="h-6 animate-pulse rounded bg-muted/60" />
@@ -162,23 +162,23 @@ export function AppShell() {
           ) : collectionsQuery.data?.length ? (
             <WorkspaceCollectionTree collections={collectionsQuery.data} />
           ) : (
-            <div className="rounded-xl border border-dashed border-border p-4 text-center text-xs text-muted-foreground">
+            <div className="px-2 py-3 text-center text-xs text-muted-foreground/80">
               No collections found.
             </div>
           )
         ) : (
-          <div className="space-y-1">
-            <div className="text-muted-foreground text-xs px-2 py-1 mb-2">Navigation Shortcuts</div>
+          <div className="space-y-1 px-1">
+            <div className="text-muted-foreground text-[10px] px-1 pb-1 uppercase tracking-wider">Navigation Shortcuts</div>
             <button
               onClick={() => navigate('/')}
-              className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs text-muted-foreground hover:bg-accent/30 hover:text-foreground transition-all text-left"
+              className="flex w-full items-center gap-2.5 border-b border-border/20 px-2 py-2 text-xs text-muted-foreground hover:text-foreground transition-colors text-left"
             >
               <LayoutDashboard className="size-3.5 text-primary" />
               <span>Studio Dashboard</span>
             </button>
             <button
               onClick={() => navigate('/history')}
-              className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs text-muted-foreground hover:bg-accent/30 hover:text-foreground transition-all text-left"
+              className="flex w-full items-center gap-2.5 border-b border-border/20 px-2 py-2 text-xs text-muted-foreground hover:text-foreground transition-colors text-left"
             >
               <History className="size-3.5 text-amber-500" />
               <span>Request History</span>
@@ -186,7 +186,7 @@ export function AppShell() {
             {activeWorkspace && (
               <button
                 onClick={() => navigate(`/workspace/${activeWorkspace.id}`)}
-                className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs text-muted-foreground hover:bg-accent/30 hover:text-foreground transition-all text-left"
+                className="flex w-full items-center gap-2.5 px-2 py-2 text-xs text-muted-foreground hover:text-foreground transition-colors text-left"
               >
                 <FolderTree className="size-3.5 text-sky-500" />
                 <span>Go to {activeWorkspace.name}</span>
@@ -202,20 +202,20 @@ export function AppShell() {
     <div className="flex h-screen w-screen gap-4 bg-background p-4 text-foreground overflow-hidden">
       
       {/* 1. Sleek Navigation Aside Panel (VSCode-Style) */}
-      <aside className={`flex h-full flex-col border border-border/60 rounded-3xl bg-zinc-950/5 dark:bg-zinc-950/70 backdrop-blur-xl shrink-0 transition-all duration-200 ${sidebarCollapsed ? 'w-14' : 'w-56'}`}>
+      <aside className={`flex h-full flex-col border border-border/60 rounded-3xl bg-zinc-950/5 dark:bg-zinc-950/70 shrink-0 transition-all duration-200 ${sidebarCollapsed ? 'w-14' : 'w-56'}`}>
         {/* Brand Header */}
         <div className="flex h-14 items-center justify-between px-3 border-b border-border/40">
           {!sidebarCollapsed ? (
             <div className="flex items-center gap-2 px-1">
-              <div className="size-6 rounded-lg bg-gradient-to-tr from-primary to-violet-500 flex items-center justify-center shadow-lg shadow-primary/25">
+              <div className="size-6 rounded-lg bg-linear-to-tr from-primary to-violet-500 flex items-center justify-center">
                 <Sparkles className="size-3 text-white" />
               </div>
-              <span className="font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-sm">
+              <span className="font-bold tracking-tight bg-linear-to-r from-foreground to-foreground/80 bg-clip-text text-sm">
                 API<span className="text-primary font-black">Forge</span>
               </span>
             </div>
           ) : (
-            <div className="mx-auto size-6 rounded-lg bg-gradient-to-tr from-primary to-violet-500 flex items-center justify-center shadow-lg shadow-primary/25">
+            <div className="mx-auto size-6 rounded-lg bg-linear-to-tr from-primary to-violet-500 flex items-center justify-center">
               <Sparkles className="size-3 text-white" />
             </div>
           )}
@@ -253,7 +253,7 @@ export function AppShell() {
               </button>
               
               {isWorkspaceSelectOpen && (
-                <div className="absolute left-2 right-2 top-full mt-1 z-50 rounded-lg border border-border bg-popover p-1 shadow-xl shadow-black/40 backdrop-blur-lg">
+                <div className="absolute left-2 right-2 top-full mt-1 z-50 rounded-lg border border-border bg-popover p-1">
                   {workspacesQuery.data?.map((ws) => (
                     <button
                       key={ws.id}
@@ -290,7 +290,7 @@ export function AppShell() {
                 [
                   'flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-xs font-medium transition-all duration-150',
                   isActive 
-                    ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/10' 
+                    ? 'bg-primary text-primary-foreground' 
                     : 'text-muted-foreground hover:bg-accent/40 hover:text-foreground',
                   sidebarCollapsed ? 'justify-center' : '',
                 ].join(' ')
@@ -304,7 +304,7 @@ export function AppShell() {
         </nav>
 
         {!sidebarCollapsed && (
-          <div className="flex min-h-0 flex-1 flex-col gap-2 border-t border-border/40 px-2 py-2">
+          <div className="flex min-h-0 flex-1 flex-col border-t border-border/40 px-2 py-2">
             {explorerPanel}
           </div>
         )}
@@ -319,7 +319,7 @@ export function AppShell() {
       </aside>
 
       {/* Main Workspace Area (Breadcrumbs, Toolbar, Viewport) */}
-      <main className="flex min-w-0 flex-1 flex-col h-full rounded-3xl border border-border/60 bg-[radial-gradient(ellipse_at_top,_var(--accent)/15%,_transparent_50%)] overflow-hidden">
+      <main className="flex min-w-0 flex-1 flex-col h-full rounded-3xl border border-border/60 bg-[radial-gradient(ellipse_at_top,var(--accent)/15%,transparent_50%)] overflow-hidden">
         {/* Workspace Toolbar Header */}
         <header className="flex h-14 items-center justify-between gap-4 border-b border-border/60 px-6 shrink-0 bg-background/50 backdrop-blur-xl">
           <div className="flex items-center gap-3 min-w-0">

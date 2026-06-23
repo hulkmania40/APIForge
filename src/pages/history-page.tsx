@@ -1,17 +1,9 @@
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { Clock3, History, ArrowRight } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { getApiMethodChipClasses } from '@/lib/utils'
 import { historyApi } from '@/services/history'
-
-const methodColors: Record<string, string> = {
-  GET: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400',
-  POST: 'border-amber-500/30 bg-amber-500/10 text-amber-400',
-  PUT: 'border-sky-500/30 bg-sky-500/10 text-sky-400',
-  PATCH: 'border-indigo-500/30 bg-indigo-500/10 text-indigo-400',
-  DELETE: 'border-rose-500/30 bg-rose-500/10 text-rose-400',
-}
 
 const statusColors = (status: number) => {
   if (status >= 200 && status < 300) return 'text-emerald-400 font-semibold'
@@ -24,7 +16,7 @@ export function HistoryPage() {
   const historyQuery = useQuery({ queryKey: ['history'], queryFn: historyApi.list })
 
   return (
-    <Card className="glass-card shadow-lg relative overflow-hidden">
+    <Card className="glass-card relative overflow-hidden">
       <CardHeader className="p-4 sm:p-5 border-b border-border/40">
         <div className="flex items-center gap-2">
           <History className="size-4 text-primary" />
@@ -54,7 +46,7 @@ export function HistoryPage() {
             >
               <div className="min-w-0 pr-2">
                 <div className="flex items-center gap-2.5">
-                    <span className={`text-[9px] font-bold font-mono px-1 py-0.2 rounded border shrink-0 min-w-8.5 text-center ${methodColors[item.method] || 'bg-muted text-muted-foreground border-border'}`}>
+                    <span className={`inline-flex min-w-16 items-center justify-center rounded-md border px-2.5 py-0.5 text-[10px] font-black uppercase tracking-[0.22em] leading-none font-mono ${getApiMethodChipClasses(item.method)}`}>
                     {item.method}
                   </span>
                   <span className="truncate text-xs font-mono text-foreground/90 font-semibold">{item.url}</span>

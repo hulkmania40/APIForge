@@ -5,10 +5,8 @@ import { AlertCircle } from 'lucide-react'
 
 export function NotFoundPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(102,93,232,0.12),_transparent_45%),linear-gradient(180deg,_var(--background),_color-mix(in_oklch,var(--background),black_3%))] px-4 text-foreground">
-      <Card className="max-w-md w-full glass-card shadow-2xl relative overflow-hidden text-center p-6">
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-violet-500" />
-        
+    <div className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,rgba(102,93,232,0.12),transparent_45%),linear-gradient(180deg,var(--background),color-mix(in_oklch,var(--background),black_3%))] px-4 text-foreground">
+      <Card className="max-w-md w-full glass-card relative overflow-hidden text-center p-6">
         <CardHeader className="pb-2">
           <AlertCircle className="size-12 text-rose-400 mx-auto mb-3 animate-pulse" />
           <CardTitle className="text-xl font-extrabold tracking-tight">404 - Page Not Found</CardTitle>

@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { ArrowUpRight, Clock3, FolderTree, Play, Sparkles, Plus, PlusCircle, Compass } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { getApiMethodChipClasses } from '@/lib/utils'
 import { collectionsApi } from '@/services/collections'
 import { requestsApi } from '@/services/requests'
 import { workspacesApi } from '@/services/workspaces'
@@ -30,7 +30,7 @@ export function DashboardPage() {
     <div className="space-y-6">
       
       {/* Welcome Card Panel */}
-      <Card className="glass-card relative overflow-hidden shadow-lg">
+      <Card className="glass-card relative overflow-hidden">
         <div className="absolute -right-16 -top-16 w-48 h-48 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
         <CardHeader className="pb-4">
           <div className="flex items-center gap-2 text-xs text-primary font-bold uppercase tracking-widest">
@@ -66,7 +66,7 @@ export function DashboardPage() {
       <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
         
         {/* Recent Workspaces Card */}
-        <Card className="glass-card shadow-lg">
+        <Card className="glass-card">
           <CardHeader className="border-b border-border/40 pb-4">
             <div className="flex items-center justify-between">
               <div>
@@ -116,7 +116,7 @@ export function DashboardPage() {
         </Card>
 
         {/* Recent Requests Card */}
-        <Card className="glass-card shadow-lg">
+        <Card className="glass-card">
           <CardHeader className="border-b border-border/40 pb-4">
             <CardTitle className="text-base font-bold">Recent Requests</CardTitle>
             <CardDescription className="text-xs">Executed requests across the workspace.</CardDescription>
@@ -128,14 +128,6 @@ export function DashboardPage() {
                 <div className="h-12 animate-pulse rounded-xl bg-muted/40" />
               </div>
             ) : requestsQuery.data?.slice(0, 5).map((request) => {
-              const methodColors: Record<string, string> = {
-                GET: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400',
-                POST: 'border-amber-500/30 bg-amber-500/10 text-amber-400',
-                PUT: 'border-sky-500/30 bg-sky-500/10 text-sky-400',
-                PATCH: 'border-indigo-500/30 bg-indigo-500/10 text-indigo-400',
-                DELETE: 'border-rose-500/30 bg-rose-500/10 text-rose-400',
-              };
-              
               return (
                 <button
                   key={request.id}
@@ -145,7 +137,7 @@ export function DashboardPage() {
                 >
                   <div className="min-w-0 pr-2">
                     <div className="flex items-center gap-2">
-                      <span className={`text-[9px] font-bold font-mono px-1 py-0.2 rounded border shrink-0 min-w-[34px] text-center ${methodColors[request.method] || 'bg-muted text-muted-foreground border-border'}`}>
+                      <span className={`inline-flex min-w-16 items-center justify-center rounded-md border px-2.5 py-0.5 text-[10px] font-black uppercase tracking-[0.22em] leading-none font-mono ${getApiMethodChipClasses(request.method)}`}>
                         {request.method}
                       </span>
                       <span className="truncate text-xs font-semibold text-foreground/90 group-hover:text-foreground">{request.name}</span>
