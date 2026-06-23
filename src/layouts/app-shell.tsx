@@ -99,7 +99,6 @@ export function AppShell() {
   const theme = useUiStore((state) => state.theme)
   const toggleTheme = useUiStore((state) => state.toggleTheme)
   
-  const [explorerCollapsed, setExplorerCollapsed] = useState(false)
   const [isWorkspaceSelectOpen, setIsWorkspaceSelectOpen] = useState(false)
   const [activeEnv, setActiveEnv] = useState('Development')
   
@@ -135,7 +134,7 @@ export function AppShell() {
 
   // explorer sidebar header/content
   const explorerPanel = (
-    <div className="flex h-full flex-col">
+    <div className="flex min-h-0 flex-col rounded-xl border border-border/40 bg-background/20 backdrop-blur-md">
       <div className="flex items-center justify-between px-4 py-3 shrink-0">
         <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">
           {isWorkspaceRoute ? 'Collections' : 'Quick Explorer'}
@@ -152,7 +151,7 @@ export function AppShell() {
         )}
       </div>
       
-      <div className="flex-1 overflow-y-auto px-2">
+      <div className="flex-1 overflow-y-auto px-2 pb-2">
         {isWorkspaceRoute ? (
           collectionsQuery.isLoading ? (
             <div className="space-y-2 p-2">
@@ -200,10 +199,10 @@ export function AppShell() {
   )
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-background text-foreground">
+    <div className="flex h-screen w-screen gap-4 bg-background p-4 text-foreground overflow-hidden">
       
       {/* 1. Sleek Navigation Aside Panel (VSCode-Style) */}
-      <aside className={`flex h-full flex-col border-r border-border/60 bg-zinc-950/5 dark:bg-zinc-950/70 backdrop-blur-xl shrink-0 transition-all duration-200 ${sidebarCollapsed ? 'w-14' : 'w-56'}`}>
+      <aside className={`flex h-full flex-col border border-border/60 rounded-3xl bg-zinc-950/5 dark:bg-zinc-950/70 backdrop-blur-xl shrink-0 transition-all duration-200 ${sidebarCollapsed ? 'w-14' : 'w-56'}`}>
         {/* Brand Header */}
         <div className="flex h-14 items-center justify-between px-3 border-b border-border/40">
           {!sidebarCollapsed ? (
@@ -275,7 +274,7 @@ export function AppShell() {
         </div>
 
         {/* Sidebar Nav Links */}
-        <nav className="flex-1 space-y-1 p-2">
+        <nav className="space-y-1 p-2">
           {[
             { to: '/', label: 'Dashboard', icon: LayoutDashboard },
             { to: `/workspace/${workspaceId}`, label: 'Workspace', icon: FolderTree },
@@ -304,7 +303,12 @@ export function AppShell() {
           ))}
         </nav>
 
-        {/* Collapse button when sidebar is collapsed */}
+        {!sidebarCollapsed && (
+          <div className="flex min-h-0 flex-1 flex-col gap-2 border-t border-border/40 px-2 py-2">
+            {explorerPanel}
+          </div>
+        )}
+
         {sidebarCollapsed && (
           <div className="p-2 border-t border-border/40">
             <Button variant="ghost" size="icon-xs" className="w-full hover:bg-accent/40" onClick={toggleSidebar} title="Expand Sidebar">
@@ -314,23 +318,12 @@ export function AppShell() {
         )}
       </aside>
 
-      {/* 2. Secondary Explorer Sidebar (Collections/Workspace details) */}
-      <div className={`h-full border-r border-border/60 bg-zinc-950/2 dark:bg-zinc-950/20 backdrop-blur-md flex-col shrink-0 transition-all duration-200 ${explorerCollapsed ? 'w-0 overflow-hidden' : 'w-72 flex'}`}>
-        {explorerPanel}
-      </div>
-
-      {/* 3. Main Workspace Area (Breadcrumbs, Toolbar, Viewport) */}
-      <main className="flex min-w-0 flex-1 flex-col h-full bg-[radial-gradient(ellipse_at_top,_var(--accent)/15%,_transparent_50%)]">
+      {/* Main Workspace Area (Breadcrumbs, Toolbar, Viewport) */}
+      <main className="flex min-w-0 flex-1 flex-col h-full rounded-3xl border border-border/60 bg-[radial-gradient(ellipse_at_top,_var(--accent)/15%,_transparent_50%)] overflow-hidden">
         {/* Workspace Toolbar Header */}
         <header className="flex h-14 items-center justify-between gap-4 border-b border-border/60 px-6 shrink-0 bg-background/50 backdrop-blur-xl">
           <div className="flex items-center gap-3 min-w-0">
-            <button
-              onClick={() => setExplorerCollapsed(!explorerCollapsed)}
-              className="text-muted-foreground hover:text-foreground p-1 rounded hover:bg-accent/40 transition-all shrink-0"
-              title="Toggle Explorer Sidebar"
-            >
-              <FolderTree className="size-4" />
-            </button>
+            <FolderTree className="size-4 shrink-0 text-muted-foreground" />
             <div className="flex items-center gap-1.5 text-xs text-muted-foreground truncate">
               <span>APIForge</span>
               <ChevronRight className="size-3 shrink-0" />

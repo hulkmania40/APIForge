@@ -25,7 +25,6 @@ export function HistoryPage() {
 
   return (
     <Card className="glass-card shadow-lg relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-1 h-full bg-primary" />
       <CardHeader className="p-4 sm:p-5 border-b border-border/40">
         <div className="flex items-center gap-2">
           <History className="size-4 text-primary" />
@@ -55,7 +54,7 @@ export function HistoryPage() {
             >
               <div className="min-w-0 pr-2">
                 <div className="flex items-center gap-2.5">
-                  <span className={`text-[9px] font-bold font-mono px-1 py-0.2 rounded border shrink-0 min-w-[34px] text-center ${methodColors[item.method] || 'bg-muted text-muted-foreground border-border'}`}>
+                    <span className={`text-[9px] font-bold font-mono px-1 py-0.2 rounded border shrink-0 min-w-8.5 text-center ${methodColors[item.method] || 'bg-muted text-muted-foreground border-border'}`}>
                     {item.method}
                   </span>
                   <span className="truncate text-xs font-mono text-foreground/90 font-semibold">{item.url}</span>

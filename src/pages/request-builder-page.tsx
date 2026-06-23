@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { Clock3, Copy, FolderTree, Send, Shield, TimerReset, Save, Plus, Trash2, CheckCircle2, AlertTriangle, Cpu } from 'lucide-react'
+import { Clock3, Copy, FolderTree, Send, Shield, TimerReset, Save, Plus, Trash2, CheckCircle2, Cpu } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -167,7 +167,6 @@ function RequestBuilderContent({ request }: { request: ApiRequestModel | null })
       
       {/* 1. Request Address and Method Bar Card */}
       <Card className="border-border/60 bg-zinc-900/50 backdrop-blur-xl shadow-lg relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-1 h-full bg-primary" />
         <CardHeader className="p-4 sm:p-5 space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
@@ -195,7 +194,7 @@ function RequestBuilderContent({ request }: { request: ApiRequestModel | null })
           </div>
 
           {/* Unified URL Input Group */}
-          <div className="flex items-center border border-border bg-background/50 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary/40 transition-all duration-200">
+          <div className="flex items-center border border-border bg-card/95 dark:bg-zinc-950/60 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary/40 transition-all duration-200">
             <select 
               value={selectedRequest.method} 
               onChange={(event) => setDraft((current) => (current ? { ...current, method: event.target.value as ApiRequestModel['method'] } : current))}
@@ -241,7 +240,7 @@ function RequestBuilderContent({ request }: { request: ApiRequestModel | null })
       <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr] items-start">
         
         {/* REQUEST CONFIGURATION TABBED CARD */}
-        <Card className="border-border/60 bg-zinc-900/40 backdrop-blur-xl shadow-lg min-h-125">
+        <Card className="border-border/60 bg-card/95 dark:bg-zinc-950/70 backdrop-blur-xl shadow-lg min-h-125">
           <CardHeader className="p-4 sm:p-5 border-b border-border/40 flex flex-row items-center justify-between">
             <div>
               <CardTitle className="text-sm font-semibold tracking-wide uppercase text-muted-foreground/80 flex items-center gap-1.5">
@@ -252,7 +251,7 @@ function RequestBuilderContent({ request }: { request: ApiRequestModel | null })
           </CardHeader>
           <CardContent className="p-4 sm:p-5">
             <Tabs value={activeTab} defaultValue="params" onValueChange={setActiveTab}>
-              <TabsList className="bg-background/40 border border-border/80 p-0.5 rounded-lg h-9">
+              <TabsList className="bg-card/90 dark:bg-zinc-950/60 border border-border/80 p-0.5 rounded-lg h-9">
                 <TabsTrigger value="params" className="text-xs px-4 h-8 rounded-md transition-all">Params</TabsTrigger>
                 <TabsTrigger value="headers" className="text-xs px-4 h-8 rounded-md transition-all">Headers</TabsTrigger>
                 <TabsTrigger value="auth" className="text-xs px-4 h-8 rounded-md transition-all">Auth</TabsTrigger>
@@ -282,7 +281,7 @@ function RequestBuilderContent({ request }: { request: ApiRequestModel | null })
               </TabsContent>
 
               <TabsContent value="auth" className="mt-4 focus-visible:outline-none">
-                <div className="grid gap-4 max-w-md bg-background/20 p-4 rounded-xl border border-border/50">
+                <div className="grid gap-4 max-w-md bg-card/85 dark:bg-zinc-950/55 p-4 rounded-xl border border-border/50">
                   <div className="space-y-2">
                     <Label className="text-xs text-muted-foreground/80 font-medium">Authorization type</Label>
                     <Select value={selectedRequest.authType} onChange={(event) => setDraft((current) => (current ? { ...current, authType: event.target.value as ApiRequestModel['authType'] } : current))}>
@@ -297,7 +296,7 @@ function RequestBuilderContent({ request }: { request: ApiRequestModel | null })
                         value={selectedRequest.token ?? ''} 
                         onChange={(event) => setDraft((current) => (current ? { ...current, token: event.target.value } : current))} 
                         placeholder="Paste bearer token here"
-                        className="font-mono text-xs bg-background/40"
+                        className="font-mono text-xs bg-card/90 dark:bg-zinc-950/60"
                       />
                     </div>
                   ) : (
@@ -316,7 +315,7 @@ function RequestBuilderContent({ request }: { request: ApiRequestModel | null })
                     <span className="font-mono text-[10px]">application/json</span>
                   </div>
                   <Textarea 
-                    className="min-h-[280px] font-mono text-xs bg-background/40 border-border/80 focus:border-primary/40 focus:ring-primary/20 placeholder:text-muted-foreground/30 leading-relaxed rounded-xl" 
+                    className="min-h-70 font-mono text-xs bg-card/90 dark:bg-zinc-950/60 border-border/80 focus:border-primary/40 focus:ring-primary/20 placeholder:text-muted-foreground/30 leading-relaxed rounded-xl" 
                     value={selectedRequest.body} 
                     onChange={(event) => setDraft((current) => (current ? { ...current, body: event.target.value } : current))} 
                     placeholder='{\n  "key": "value"\n}' 
@@ -328,7 +327,7 @@ function RequestBuilderContent({ request }: { request: ApiRequestModel | null })
         </Card>
 
         {/* RESPONSE PREVIEW CARD */}
-        <Card className="border-border/60 bg-zinc-900/40 backdrop-blur-xl shadow-lg min-h-[500px] flex flex-col">
+        <Card className="border-border/60 bg-card/95 dark:bg-zinc-950/70 backdrop-blur-xl shadow-lg min-h-125 flex flex-col">
           <CardHeader className="p-4 sm:p-5 border-b border-border/40">
             <CardTitle className="text-sm font-semibold tracking-wide uppercase text-muted-foreground/80 flex items-center gap-1.5">
               <CheckCircle2 className="size-3.5 text-primary" />
@@ -338,7 +337,7 @@ function RequestBuilderContent({ request }: { request: ApiRequestModel | null })
           
           <CardContent className="p-4 sm:p-5 flex-1 flex flex-col justify-start">
             {response === null ? (
-              <div className="flex-grow flex flex-col items-center justify-center text-center p-8 border border-dashed border-border/60 rounded-xl bg-background/20 h-[360px]">
+              <div className="grow flex flex-col items-center justify-center text-center p-8 border border-dashed border-border/60 rounded-xl bg-card/85 dark:bg-zinc-950/55 h-90">
                 <Send className="size-8 text-muted-foreground/40 mb-3 animate-pulse" />
                 <h3 className="text-sm font-semibold text-foreground/80">Execute Request</h3>
                 <p className="text-xs text-muted-foreground/80 mt-1 max-w-xs leading-relaxed">
@@ -369,13 +368,13 @@ function RequestBuilderContent({ request }: { request: ApiRequestModel | null })
                 
                 {/* Tabs for Response details */}
                 <Tabs defaultValue="body-view">
-                  <TabsList className="bg-background/40 border border-border/80 p-0.5 rounded-lg h-8 self-start">
+                  <TabsList className="bg-card/90 dark:bg-zinc-950/60 border border-border/80 p-0.5 rounded-lg h-8 self-start">
                     <TabsTrigger value="body-view" className="text-xs px-3 h-7 rounded-md">Body</TabsTrigger>
                     <TabsTrigger value="headers-view" className="text-xs px-3 h-7 rounded-md">Headers ({response.headers.length})</TabsTrigger>
                   </TabsList>
                   
-                  <TabsContent value="body-view" className="mt-3 flex-1 flex flex-col min-h-[260px] focus-visible:outline-none">
-                    <div className="relative flex-grow flex flex-col rounded-xl border border-border/80 bg-background/50 overflow-hidden">
+                  <TabsContent value="body-view" className="mt-3 flex-1 flex flex-col min-h-65 focus-visible:outline-none">
+                    <div className="relative grow flex flex-col rounded-xl border border-border/80 bg-card/95 dark:bg-zinc-950/60 overflow-hidden">
                       <div className="absolute top-2 right-2 z-10">
                         <Button 
                           variant="ghost" 
@@ -387,14 +386,14 @@ function RequestBuilderContent({ request }: { request: ApiRequestModel | null })
                           <Copy className="size-3" />
                         </Button>
                       </div>
-                      <div className="flex-grow p-4 overflow-auto max-h-[360px] leading-relaxed">
+                      <div className="grow p-4 overflow-auto max-h-90 leading-relaxed">
                         <JSONColorizer jsonString={response.body} />
                       </div>
                     </div>
                   </TabsContent>
                   
                   <TabsContent value="headers-view" className="mt-3 focus-visible:outline-none">
-                    <div className="overflow-hidden rounded-xl border border-border/85 bg-background/40">
+                    <div className="overflow-hidden rounded-xl border border-border/85 bg-card/90 dark:bg-zinc-950/55">
                       <Table>
                         <TableHeader>
                           <TableRow className="border-b border-border/60 hover:bg-transparent">
@@ -435,10 +434,10 @@ interface EditableRowsProps {
 function EditableRows({ rows, onAdd, onRemove, onChange, placeholderKey, placeholderValue }: EditableRowsProps) {
   return (
     <div className="space-y-3">
-      <div className="overflow-hidden rounded-xl border border-border bg-background/20">
+      <div className="overflow-hidden rounded-xl border border-border bg-card/85 dark:bg-zinc-950/55">
         <Table>
           <TableHeader>
-            <TableRow className="border-b border-border/60 hover:bg-transparent bg-background/40">
+            <TableRow className="border-b border-border/60 hover:bg-transparent bg-card/90 dark:bg-zinc-950/55">
               <TableHead className="w-12 text-[11px] font-bold text-muted-foreground/80 text-center py-2">On</TableHead>
               <TableHead className="text-[11px] font-bold text-muted-foreground/80 py-2">Key</TableHead>
               <TableHead className="text-[11px] font-bold text-muted-foreground/80 py-2">Value</TableHead>
@@ -448,7 +447,7 @@ function EditableRows({ rows, onAdd, onRemove, onChange, placeholderKey, placeho
           <TableBody>
             {rows.length === 0 ? (
               <TableRow className="hover:bg-transparent">
-                <TableCell colSpan={4} className="text-center text-xs text-muted-foreground py-6 border-none">
+                <TableCell className="text-center text-xs text-muted-foreground py-6 border-none">
                   No variables defined. Click Add Row below to get started.
                 </TableCell>
               </TableRow>
@@ -525,7 +524,7 @@ function Metric({ label, value, status, icon }: { label: string; value: string; 
   }, [status])
 
   return (
-    <div className={`rounded-xl border border-border bg-background/50 p-2.5 flex flex-col justify-between ${status !== undefined ? statusColor : ''}`}>
+    <div className={`rounded-xl border border-border bg-card/90 dark:bg-zinc-950/60 p-2.5 flex flex-col justify-between ${status !== undefined ? statusColor : ''}`}>
       <div className="flex items-center justify-between text-[10px] text-muted-foreground/80 font-medium uppercase tracking-wider">
         <span>{label}</span>
         {icon}
@@ -537,7 +536,7 @@ function Metric({ label, value, status, icon }: { label: string; value: string; 
 
 function EmptyRequestState() {
   return (
-    <Card className="border-border/60 bg-zinc-900/40 backdrop-blur-xl p-8 max-w-md mx-auto text-center mt-12 shadow-lg">
+    <Card className="border-border/60 bg-card/95 dark:bg-zinc-950/70 backdrop-blur-xl p-8 max-w-md mx-auto text-center mt-12 shadow-lg">
       <CardHeader className="pb-2">
         <FolderTree className="size-10 text-primary/60 mx-auto mb-2 animate-bounce" />
         <CardTitle className="text-lg font-semibold text-foreground">No Request Opened</CardTitle>

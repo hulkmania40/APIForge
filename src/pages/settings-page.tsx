@@ -17,8 +17,7 @@ export function SettingsPage() {
     <div className="space-y-6">
       
       {/* Settings Header Panel */}
-      <Card className="border-border/60 bg-zinc-900/40 backdrop-blur-xl relative overflow-hidden shadow-lg">
-        <div className="absolute top-0 left-0 w-1 h-full bg-primary" />
+      <Card className="border-border/60 bg-background/70 dark:bg-zinc-950/70 backdrop-blur-xl relative overflow-hidden shadow-lg">
         <CardHeader>
           <div className="flex items-center gap-2">
             <Settings className="size-4 text-primary" />
@@ -43,7 +42,7 @@ export function SettingsPage() {
       <div className="grid gap-6 xl:grid-cols-2">
         
         {/* Members Management */}
-        <Card className="border-border/60 bg-zinc-900/40 backdrop-blur-xl shadow-lg">
+        <Card className="border-border/60 bg-background/70 dark:bg-zinc-950/70 backdrop-blur-xl shadow-lg">
           <CardHeader className="border-b border-border/40 pb-4">
             <div className="flex items-center justify-between">
               <div>
@@ -63,10 +62,10 @@ export function SettingsPage() {
             {members.map((member) => (
               <div 
                 key={member.id} 
-                className="flex items-center justify-between rounded-xl border border-border/80 bg-background/30 p-3.5 hover:border-primary/20 transition-all duration-150"
+                className="flex items-center justify-between rounded-xl border border-border/80 bg-background/30 dark:bg-zinc-950/60 p-3.5 hover:border-primary/20 transition-all duration-150"
               >
                 <div className="flex items-center gap-3">
-                  <div className="size-8 rounded-full bg-gradient-to-tr from-primary/10 to-violet-500/10 border border-primary/20 flex items-center justify-center font-bold text-xs text-primary shrink-0 select-none">
+                  <div className="size-8 rounded-full bg-linear-to-tr from-primary/10 to-violet-500/10 border border-primary/20 flex items-center justify-center font-bold text-xs text-primary shrink-0 select-none">
                     {member.name.charAt(0)}
                   </div>
                   <div>
@@ -84,7 +83,7 @@ export function SettingsPage() {
         </Card>
 
         {/* Invitations Management */}
-        <Card className="border-border/60 bg-zinc-900/40 backdrop-blur-xl shadow-lg">
+        <Card className="border-border/60 bg-background/70 dark:bg-zinc-950/70 backdrop-blur-xl shadow-lg">
           <CardHeader className="border-b border-border/40 pb-4">
             <CardTitle className="text-base font-bold">Pending Invitations</CardTitle>
             <CardDescription className="text-xs">Outstanding and accepted team invitations.</CardDescription>
@@ -93,7 +92,7 @@ export function SettingsPage() {
             {invitations.map((invitation) => (
               <div 
                 key={invitation.id} 
-                className="flex items-center justify-between rounded-xl border border-border/80 bg-background/30 p-3.5 hover:border-primary/20 transition-all duration-150"
+                className="flex items-center justify-between rounded-xl border border-border/80 bg-background/30 dark:bg-zinc-950/60 p-3.5 hover:border-primary/20 transition-all duration-150"
               >
                 <div className="min-w-0 pr-2">
                   <p className="font-semibold text-xs text-foreground truncate select-all">{invitation.email}</p>
@@ -118,12 +117,12 @@ export function SettingsPage() {
 
 function SettingTile({ title, count, icon }: { title: string; count: number; icon: React.ReactNode }) {
   return (
-    <div className="rounded-xl border border-border/60 bg-background/40 p-4 flex items-center justify-between transition-all duration-300 hover:border-primary/25 group">
+    <div className="rounded-xl border border-border/60 bg-background/40 dark:bg-zinc-950/60 p-4 flex items-center justify-between transition-all duration-300 hover:border-primary/25 group">
       <div>
         <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{title}</span>
         <p className="mt-2 text-2xl font-black text-foreground group-hover:scale-105 origin-left transition-transform duration-200">{count}</p>
       </div>
-      <div className="size-8 rounded-lg bg-zinc-950/50 border border-border/60 flex items-center justify-center shrink-0">
+      <div className="size-8 rounded-lg bg-background/70 dark:bg-zinc-950/80 border border-border/60 flex items-center justify-center shrink-0">
         {icon}
       </div>
     </div>

@@ -49,26 +49,26 @@
 /* OVERRIDES: DARK THEME */
 .dark {
   color-scheme: dark;
-  --background: oklch(0.085 0.012 240);
+  --background: oklch(0.075 0.02 252);
   --foreground: oklch(0.97 0.005 240);
-  --card: oklch(0.11 0.015 240);
+  --card: oklch(0.095 0.018 252);
   --card-foreground: oklch(0.97 0.005 240);
-  --popover: oklch(0.11 0.015 240);
+  --popover: oklch(0.095 0.018 252);
   --popover-foreground: oklch(0.97 0.005 240);
   
   /* Electric Purple/Indigo Accent for dark mode */
   --primary: oklch(0.64 0.19 265);
   --primary-foreground: oklch(0.98 0.005 240);
   
-  --secondary: oklch(0.14 0.012 240);
+  --secondary: oklch(0.125 0.016 252);
   --secondary-foreground: oklch(0.97 0.005 240);
-  --muted: oklch(0.14 0.012 240);
+  --muted: oklch(0.125 0.016 252);
   --muted-foreground: oklch(0.64 0.015 240);
-  --accent: oklch(0.16 0.015 240);
+  --accent: oklch(0.145 0.02 252);
   --accent-foreground: oklch(0.98 0.005 240);
   --destructive: oklch(0.55 0.22 25);
-  --border: oklch(0.20 0.015 240 / 70%);
-  --input: oklch(0.13 0.012 240 / 80%);
+  --border: oklch(0.19 0.02 252 / 70%);
+  --input: oklch(0.12 0.016 252 / 80%);
   --ring: oklch(0.64 0.19 265);
   --chart-1: oklch(0.64 0.19 265);
   

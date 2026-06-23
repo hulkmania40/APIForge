@@ -36,7 +36,7 @@ export function WorkspacePage() {
     <div className="space-y-6">
       
       {/* Workspace banner card */}
-      <Card className="border-border/60 bg-zinc-900/40 backdrop-blur-xl relative overflow-hidden shadow-lg">
+      <Card className="border-border/60 bg-background/70 dark:bg-zinc-950/70 backdrop-blur-xl relative overflow-hidden shadow-lg">
         <div 
           className="absolute right-0 top-0 w-32 h-32 blur-3xl opacity-20 rounded-full pointer-events-none"
           style={{ backgroundColor: workspaceQuery.data?.color ?? 'var(--primary)' }}
@@ -65,7 +65,7 @@ export function WorkspacePage() {
       <div className="grid gap-6 lg:grid-cols-2">
         
         {/* Getting started panel */}
-        <Card className="border-border/60 bg-zinc-900/40 backdrop-blur-xl shadow-lg">
+        <Card className="border-border/60 bg-background/70 dark:bg-zinc-950/70 backdrop-blur-xl shadow-lg">
           <CardHeader className="border-b border-border/40 pb-4">
             <CardTitle className="text-base font-bold flex items-center gap-2">
               <Cpu className="size-4 text-primary" />
@@ -75,7 +75,7 @@ export function WorkspacePage() {
           </CardHeader>
           <CardContent className="space-y-3 pt-4">
             <Button 
-              className="w-full justify-start gap-2.5 text-xs font-semibold rounded-lg hover:border-primary/30 transition-all p-4 border border-border bg-background/20" 
+              className="w-full justify-start gap-2.5 text-xs font-semibold rounded-lg hover:border-primary/30 transition-all p-4 border border-border bg-background/20 dark:bg-zinc-950/60"
               variant="outline" 
               onClick={() => navigate(`/workspace/${workspaceId}/request/request-me`)}
             >
@@ -84,7 +84,7 @@ export function WorkspacePage() {
             </Button>
             
             <Button 
-              className="w-full justify-start gap-2.5 text-xs font-semibold rounded-lg hover:border-primary/30 transition-all p-4 border border-border bg-background/20" 
+              className="w-full justify-start gap-2.5 text-xs font-semibold rounded-lg hover:border-primary/30 transition-all p-4 border border-border bg-background/20 dark:bg-zinc-950/60"
               variant="outline" 
               onClick={() => navigate(`/workspace/${workspaceId}/environments`)}
             >
@@ -93,7 +93,7 @@ export function WorkspacePage() {
             </Button>
             
             <Button 
-              className="w-full justify-start gap-2.5 text-xs font-semibold rounded-lg hover:border-primary/30 transition-all p-4 border border-border bg-background/20" 
+              className="w-full justify-start gap-2.5 text-xs font-semibold rounded-lg hover:border-primary/30 transition-all p-4 border border-border bg-background/20 dark:bg-zinc-950/60"
               variant="outline" 
               onClick={() => navigate(`/workspace/${workspaceId}/settings`)}
             >
@@ -104,7 +104,7 @@ export function WorkspacePage() {
         </Card>
 
         {/* Latest workspace endpoints */}
-        <Card className="border-border/60 bg-zinc-900/40 backdrop-blur-xl shadow-lg">
+        <Card className="border-border/60 bg-background/70 dark:bg-zinc-950/70 backdrop-blur-xl shadow-lg">
           <CardHeader className="border-b border-border/40 pb-4">
             <CardTitle className="text-base font-bold flex items-center gap-2">
               <Sparkles className="size-4 text-sky-400" />
@@ -135,12 +135,12 @@ export function WorkspacePage() {
                 <button 
                   key={request.id} 
                   type="button" 
-                  className="w-full rounded-xl border border-border/80 bg-background/30 p-3 text-left transition-all duration-200 hover:bg-accent/40 hover:border-primary/20 group flex justify-between items-center" 
+                  className="w-full rounded-xl border border-border/80 bg-background/30 dark:bg-zinc-950/60 p-3 text-left transition-all duration-200 hover:bg-accent/40 hover:border-primary/20 group flex justify-between items-center"
                   onClick={() => navigate(`/workspace/${request.workspaceId}/request/${request.id}`)}
                 >
                   <div className="min-w-0 pr-2">
                     <div className="flex items-center gap-2">
-                      <span className={`text-[9px] font-bold font-mono px-1 py-0.2 rounded border shrink-0 min-w-[34px] text-center ${methodColors[request.method] || 'bg-muted text-muted-foreground border-border'}`}>
+                      <span className={`text-[9px] font-bold font-mono px-1 py-0.2 rounded border shrink-0 min-w-8.5 text-center ${methodColors[request.method] || 'bg-muted text-muted-foreground border-border'}`}>
                         {request.method}
                       </span>
                       <span className="truncate text-xs font-semibold text-foreground/90 group-hover:text-foreground">{request.name}</span>
@@ -162,12 +162,12 @@ export function WorkspacePage() {
 
 function Stat({ label, value, icon }: { label: string; value: number; icon: React.ReactNode }) {
   return (
-    <div className="rounded-xl border border-border/60 bg-background/40 p-4 flex items-center justify-between transition-all duration-300 hover:border-primary/25 group">
+    <div className="rounded-xl border border-border/60 bg-background/40 dark:bg-zinc-950/60 p-4 flex items-center justify-between transition-all duration-300 hover:border-primary/25 group">
       <div>
         <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{label}</p>
         <p className="mt-2 text-2xl font-black text-foreground group-hover:scale-105 origin-left transition-transform duration-200">{value}</p>
       </div>
-      <div className="size-8 rounded-lg bg-zinc-950/50 border border-border/60 flex items-center justify-center shrink-0">
+      <div className="size-8 rounded-lg bg-background/70 dark:bg-zinc-950/80 border border-border/60 flex items-center justify-center shrink-0">
         {icon}
       </div>
     </div>
