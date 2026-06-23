@@ -1,26 +1,48 @@
-import { ChevronRight, History, LayoutDashboard, Settings, SidebarClose, SidebarOpen } from 'lucide-react'
+import { useState } from 'react'
+import { ChevronRight, History, LayoutDashboard, Settings, SidebarClose, SidebarOpen, Folder, FolderPlus, Plus, PlusCircle, Database, ChevronDown, Check, Braces, Sparkles, FolderTree, ArrowRight, User } from 'lucide-react'
 import { NavLink, Outlet, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { collectionsApi } from '@/services/collections'
 import { workspacesApi } from '@/services/workspaces'
 import { useUiStore } from '@/stores/ui-store'
 import type { CollectionFolderModel, CollectionModel } from '@/types/models'
 
+const methodBadgeColors: Record<string, string> = {
+  GET: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25',
+  POST: 'bg-amber-500/10 text-amber-400 border-amber-500/25',
+  PUT: 'bg-sky-500/10 text-sky-400 border-sky-500/25',
+  PATCH: 'bg-indigo-500/10 text-indigo-400 border-indigo-500/25',
+  DELETE: 'bg-rose-500/10 text-rose-400 border-rose-500/25',
+}
+
 function WorkspaceCollectionTree({ collections }: { collections: CollectionModel[] }) {
   return (
-    <div className="space-y-3">
+    <div className="space-y-1 pr-1 select-none">
       {collections.map((collection) => (
-        <details key={collection.id} open className="group rounded-xl border border-border bg-card/80 p-3">
-          <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-sm font-medium text-foreground outline-none">
-            <span>{collection.name}</span>
-            <ChevronRight className="size-4 text-muted-foreground transition-transform group-open:rotate-90" />
+        <details key={collection.id} open className="group">
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-1.5 rounded-lg px-2 py-1.5 text-xs font-semibold text-muted-foreground hover:bg-accent/40 hover:text-foreground transition-all duration-150 outline-none">
+            <div className="flex items-center gap-2 truncate">
+              <ChevronRight className="size-3 text-muted-foreground/60 transition-transform group-open:rotate-90" />
+              <Folder className="size-3.5 text-primary/70 shrink-0" />
+              <span className="truncate">{collection.name}</span>
+            </div>
+            <button 
+              type="button" 
+              className="opacity-0 group-hover:opacity-100 hover:text-primary transition-opacity size-4 flex items-center justify-center rounded hover:bg-muted"
+              onClick={(e) => {
+                e.preventDefault();
+                alert(`Add Request under Collection: ${collection.name}`);
+              }}
+              title="Add Request"
+            >
+              <Plus className="size-3" />
+            </button>
           </summary>
-          <p className="mt-1 text-xs text-muted-foreground">{collection.description}</p>
-          <div className="mt-3 space-y-2 pl-2">
+          
+          <div className="mt-0.5 space-y-0.5 pl-3 border-l border-border/40 ml-3.5">
             {collection.folders.map((folder) => (
               <FolderNode key={folder.id} folder={folder} />
             ))}
@@ -33,25 +55,35 @@ function WorkspaceCollectionTree({ collections }: { collections: CollectionModel
 
 function FolderNode({ folder }: { folder: CollectionFolderModel }) {
   return (
-    <details open className="group rounded-lg border border-border/70 bg-background/60 p-2">
-      <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-sm outline-none">
-        <span className="font-medium text-foreground">{folder.name}</span>
-        <Badge tone="outline">{folder.requestCount}</Badge>
+    <details open className="group">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-1.5 rounded-lg px-2 py-1.5 text-xs text-muted-foreground hover:bg-accent/40 hover:text-foreground transition-all duration-150 outline-none">
+        <div className="flex items-center gap-2 truncate">
+          <ChevronRight className="size-3 text-muted-foreground/60 transition-transform group-open:rotate-90" />
+          <Folder className="size-3.5 text-muted-foreground/60 shrink-0" />
+          <span className="truncate">{folder.name}</span>
+        </div>
+        <Badge tone="outline" className="text-[10px] px-1 py-0 h-4 border-border/60 bg-transparent text-muted-foreground/80">{folder.requestCount}</Badge>
       </summary>
-      <div className="mt-2 space-y-1 pl-1">
+      <div className="mt-0.5 space-y-0.5 pl-3 border-l border-border/40 ml-3.5">
         {folder.requests.map((request) => (
           <NavLink
             key={request.id}
             to={`/workspace/${request.workspaceId}/request/${request.id}`}
             className={({ isActive }) =>
               [
-                'flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm transition-colors',
-                isActive ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground',
+                'flex items-center justify-between gap-2 rounded-lg px-2.5 py-1 text-xs transition-all duration-150 group/item border',
+                isActive 
+                  ? 'bg-primary/10 border-primary/20 text-foreground font-medium shadow-[inset_0_1px_0_0_rgba(255,255,255,0.02)]' 
+                  : 'border-transparent text-muted-foreground hover:bg-accent/30 hover:text-foreground',
               ].join(' ')
             }
           >
-            <Badge tone="outline">{request.method}</Badge>
-            <span className="truncate">{request.name}</span>
+            <div className="flex items-center gap-2 truncate">
+              <span className={`text-[9px] font-bold font-mono px-1 py-0.2 rounded border shrink-0 min-w-[34px] text-center ${methodBadgeColors[request.method] || 'bg-muted text-muted-foreground border-border'}`}>
+                {request.method}
+              </span>
+              <span className="truncate">{request.name}</span>
+            </div>
           </NavLink>
         ))}
       </div>
@@ -64,10 +96,20 @@ export function AppShell() {
   const toggleSidebar = useUiStore((state) => state.toggleSidebar)
   const activeWorkspaceId = useUiStore((state) => state.activeWorkspaceId)
   const setActiveWorkspaceId = useUiStore((state) => state.setActiveWorkspaceId)
+  
+  const [explorerCollapsed, setExplorerCollapsed] = useState(false)
+  const [isWorkspaceSelectOpen, setIsWorkspaceSelectOpen] = useState(false)
+  const [activeEnv, setActiveEnv] = useState('Development')
+  
   const location = useLocation()
   const navigate = useNavigate()
   const params = useParams()
   const workspaceId = params.workspaceId ?? activeWorkspaceId
+
+  const workspacesQuery = useQuery({
+    queryKey: ['workspaces'],
+    queryFn: workspacesApi.list,
+  })
 
   const workspaceQuery = useQuery({
     queryKey: ['workspace', workspaceId],
@@ -80,157 +122,249 @@ export function AppShell() {
   })
 
   const isWorkspaceRoute = location.pathname.startsWith('/workspace/')
+  const activeWorkspace = workspaceQuery.data ?? workspacesQuery.data?.find(w => w.id === workspaceId)
 
-  const middlePanel = isWorkspaceRoute ? (
-    <Card className="h-full border-border/80 bg-card/80">
-      <CardHeader>
-        <CardTitle>Collections</CardTitle>
-      </CardHeader>
-      <CardContent>
-        {collectionsQuery.isLoading ? (
-          <div className="space-y-3">
-            <div className="h-20 animate-pulse rounded-xl bg-muted" />
-            <div className="h-20 animate-pulse rounded-xl bg-muted" />
-          </div>
-        ) : collectionsQuery.data?.length ? (
-          <WorkspaceCollectionTree collections={collectionsQuery.data} />
+  // Navigate to selected workspace
+  const handleWorkspaceChange = (id: string) => {
+    setActiveWorkspaceId(id)
+    navigate(`/workspace/${id}`)
+    setIsWorkspaceSelectOpen(false)
+  }
+
+  // explorer sidebar header/content
+  const explorerPanel = (
+    <div className="flex h-full flex-col">
+      <div className="flex items-center justify-between px-4 py-3 shrink-0">
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">
+          {isWorkspaceRoute ? 'Collections' : 'Quick Explorer'}
+        </h2>
+        {isWorkspaceRoute && (
+          <button 
+            type="button" 
+            className="text-muted-foreground hover:text-foreground hover:bg-accent/40 rounded p-1 transition-all"
+            onClick={() => alert('Create new Collection flow')}
+            title="Create Collection"
+          >
+            <FolderPlus className="size-4" />
+          </button>
+        )}
+      </div>
+      
+      <div className="flex-1 overflow-y-auto px-2">
+        {isWorkspaceRoute ? (
+          collectionsQuery.isLoading ? (
+            <div className="space-y-2 p-2">
+              <div className="h-6 animate-pulse rounded bg-muted/60" />
+              <div className="h-6 animate-pulse rounded bg-muted/60" />
+              <div className="h-6 animate-pulse rounded bg-muted/60" />
+            </div>
+          ) : collectionsQuery.data?.length ? (
+            <WorkspaceCollectionTree collections={collectionsQuery.data} />
+          ) : (
+            <div className="rounded-xl border border-dashed border-border p-4 text-center text-xs text-muted-foreground">
+              No collections found.
+            </div>
+          )
         ) : (
-          <div className="rounded-xl border border-dashed border-border p-6 text-sm text-muted-foreground">
-            No collections found for this workspace.
+          <div className="space-y-1">
+            <div className="text-muted-foreground text-xs px-2 py-1 mb-2">Navigation Shortcuts</div>
+            <button
+              onClick={() => navigate('/')}
+              className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs text-muted-foreground hover:bg-accent/30 hover:text-foreground transition-all text-left"
+            >
+              <LayoutDashboard className="size-3.5 text-primary" />
+              <span>Studio Dashboard</span>
+            </button>
+            <button
+              onClick={() => navigate('/history')}
+              className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs text-muted-foreground hover:bg-accent/30 hover:text-foreground transition-all text-left"
+            >
+              <History className="size-3.5 text-amber-500" />
+              <span>Request History</span>
+            </button>
+            {activeWorkspace && (
+              <button
+                onClick={() => navigate(`/workspace/${activeWorkspace.id}`)}
+                className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs text-muted-foreground hover:bg-accent/30 hover:text-foreground transition-all text-left"
+              >
+                <FolderTree className="size-3.5 text-sky-500" />
+                <span>Go to {activeWorkspace.name}</span>
+              </button>
+            )}
           </div>
         )}
-      </CardContent>
-    </Card>
-  ) : (
-    <Card className="h-full border-border/80 bg-card/80">
-      <CardHeader>
-        <CardTitle>Quick Switch</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        <Button className="w-full justify-start" variant="outline" onClick={() => navigate('/')}>Dashboard</Button>
-        <Button className="w-full justify-start" variant="outline" onClick={() => navigate('/history')}>History</Button>
-        {workspaceQuery.data?.id ? (
-          <Button
-            className="w-full justify-start"
-            variant="outline"
-            onClick={() => {
-              const workspace = workspaceQuery.data
-              if (workspace !== undefined) {
-                navigate(`/workspace/${workspace.id}`)
-              }
-            }}
-          >
-            Continue {workspaceQuery.data.name}
-          </Button>
-        ) : null}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 
   return (
-    <div className="flex min-h-screen bg-[radial-gradient(circle_at_top_right,_rgba(56,189,248,0.12),_transparent_28%),radial-gradient(circle_at_bottom_left,_rgba(251,146,60,0.10),_transparent_24%),linear-gradient(180deg,_var(--background),_color-mix(in_oklch,var(--background),black_3%))] text-foreground">
-      <aside className={sidebarCollapsed ? 'w-20' : 'w-68'}>
-        <div className="flex h-full flex-col border-r border-border/80 bg-background/80 backdrop-blur-xl">
-          <div className="flex items-center justify-between gap-3 px-4 py-4">
-            {!sidebarCollapsed ? (
-              <div>
-                <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">APIForge</p>
-                <h1 className="text-lg font-semibold">Request Studio</h1>
+    <div className="flex h-screen w-screen overflow-hidden bg-background text-foreground">
+      
+      {/* 1. Sleek Navigation Aside Panel (VSCode-Style) */}
+      <aside className={`flex h-full flex-col border-r border-border/60 bg-zinc-950/70 backdrop-blur-xl shrink-0 transition-all duration-200 ${sidebarCollapsed ? 'w-14' : 'w-56'}`}>
+        {/* Brand Header */}
+        <div className="flex h-14 items-center justify-between px-3 border-b border-border/40">
+          {!sidebarCollapsed ? (
+            <div className="flex items-center gap-2 px-1">
+              <div className="size-6 rounded-lg bg-gradient-to-tr from-primary to-violet-500 flex items-center justify-center shadow-lg shadow-primary/20">
+                <Sparkles className="size-3 text-white" />
               </div>
-            ) : (
-              <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-border bg-card text-sm font-semibold">AF</div>
-            )}
-            <Button variant="ghost" size="icon-sm" onClick={toggleSidebar} aria-label="Toggle sidebar">
-              {sidebarCollapsed ? <SidebarOpen className="size-4" /> : <SidebarClose className="size-4" />}
+              <span className="font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-sm">
+                API<span className="text-primary font-black">Forge</span>
+              </span>
+            </div>
+          ) : (
+            <div className="mx-auto size-6 rounded-lg bg-gradient-to-tr from-primary to-violet-500 flex items-center justify-center shadow-lg shadow-primary/20">
+              <Sparkles className="size-3 text-white" />
+            </div>
+          )}
+          
+          {!sidebarCollapsed && (
+            <Button variant="ghost" size="icon-xs" className="hover:bg-accent/40" onClick={toggleSidebar} title="Collapse Sidebar">
+              <SidebarClose className="size-3.5" />
+            </Button>
+          )}
+        </div>
+
+        {/* Workspace Dropdown Switcher */}
+        <div className="p-2 border-b border-border/40 relative">
+          {sidebarCollapsed ? (
+            <button 
+              className="mx-auto size-8 rounded-lg border border-border flex items-center justify-center text-xs font-semibold hover:bg-accent/30 transition-all hover:border-primary/40"
+              style={{ borderLeftColor: activeWorkspace?.color ?? 'var(--border)' }}
+              onClick={toggleSidebar}
+              title="Switch Workspace"
+            >
+              {activeWorkspace?.name.charAt(0) ?? 'W'}
+            </button>
+          ) : (
+            <div>
+              <button
+                type="button"
+                className="flex w-full items-center justify-between gap-1.5 rounded-lg border border-border bg-background/50 px-2.5 py-1.5 text-left text-xs font-medium hover:bg-accent/30 hover:border-primary/40 transition-all"
+                onClick={() => setIsWorkspaceSelectOpen(!isWorkspaceSelectOpen)}
+              >
+                <div className="flex items-center gap-2 truncate">
+                  <span className="h-2 w-2 rounded-full shrink-0 shadow-sm" style={{ backgroundColor: activeWorkspace?.color }} />
+                  <span className="truncate">{activeWorkspace?.name ?? 'Select Workspace'}</span>
+                </div>
+                <ChevronDown className="size-3.5 text-muted-foreground shrink-0" />
+              </button>
+              
+              {isWorkspaceSelectOpen && (
+                <div className="absolute left-2 right-2 top-full mt-1 z-50 rounded-lg border border-border bg-popover p-1 shadow-xl shadow-black/40 backdrop-blur-lg">
+                  {workspacesQuery.data?.map((ws) => (
+                    <button
+                      key={ws.id}
+                      className="flex w-full items-center justify-between rounded-md px-2 py-1.5 text-xs text-left hover:bg-accent hover:text-foreground transition-all duration-100"
+                      onClick={() => handleWorkspaceChange(ws.id)}
+                    >
+                      <div className="flex items-center gap-2 truncate">
+                        <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: ws.color }} />
+                        <span className="truncate">{ws.name}</span>
+                      </div>
+                      {ws.id === workspaceId && <Check className="size-3.5 text-primary" />}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Sidebar Nav Links */}
+        <nav className="flex-1 space-y-1 p-2">
+          {[
+            { to: '/', label: 'Dashboard', icon: LayoutDashboard },
+            { to: `/workspace/${workspaceId}`, label: 'Workspace', icon: FolderTree },
+            { to: `/workspace/${workspaceId}/environments`, label: 'Environments', icon: Braces },
+            { to: '/history', label: 'History', icon: History },
+            { to: `/workspace/${workspaceId}/settings`, label: 'Settings', icon: Settings },
+          ].map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={({ isActive }) =>
+                [
+                  'flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-xs font-medium transition-all duration-150',
+                  isActive 
+                    ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/10' 
+                    : 'text-muted-foreground hover:bg-accent/40 hover:text-foreground',
+                  sidebarCollapsed ? 'justify-center' : '',
+                ].join(' ')
+              }
+              title={sidebarCollapsed ? item.label : undefined}
+            >
+              <item.icon className="size-4 shrink-0" />
+              {!sidebarCollapsed ? <span>{item.label}</span> : null}
+            </NavLink>
+          ))}
+        </nav>
+
+        {/* Collapse button when sidebar is collapsed */}
+        {sidebarCollapsed && (
+          <div className="p-2 border-t border-border/40">
+            <Button variant="ghost" size="icon-xs" className="w-full hover:bg-accent/40" onClick={toggleSidebar} title="Expand Sidebar">
+              <SidebarOpen className="size-3.5" />
             </Button>
           </div>
-
-          <Separator />
-
-          <nav className="space-y-2 px-3 py-4">
-            {[
-              { to: '/', label: 'Dashboard', icon: LayoutDashboard },
-              { to: '/history', label: 'History', icon: History },
-              { to: `/workspace/${workspaceId}/settings`, label: 'Settings', icon: Settings },
-            ].map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                className={({ isActive }) =>
-                  [
-                    'flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-colors',
-                    isActive ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground',
-                  ].join(' ')
-                }
-              >
-                <item.icon className="size-4" />
-                {!sidebarCollapsed ? <span>{item.label}</span> : null}
-              </NavLink>
-            ))}
-          </nav>
-
-          <div className="mt-auto px-4 pb-4">
-            <Card className="border-border/80 bg-card/90">
-              <CardContent className="space-y-3 p-4">
-                <div className="space-y-1">
-                  <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Active workspace</p>
-                  <p className="font-medium">{workspaceQuery.data?.name ?? 'Loading…'}</p>
-                </div>
-                <Button className="w-full" variant="outline" onClick={() => workspaceQuery.data && (setActiveWorkspaceId(workspaceQuery.data.id), navigate(`/workspace/${workspaceQuery.data.id}`))}>
-                  Open workspace
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
+        )}
       </aside>
 
-      <main className="flex min-w-0 flex-1 flex-col">
-        <header className="flex items-center justify-between gap-4 border-b border-border/80 bg-background/70 px-6 py-4 backdrop-blur-xl">
-          <div>
-            <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">Developer API workspace</p>
-            <div className="flex items-center gap-2">
-              <h2 className="text-lg font-semibold">{workspaceQuery.data?.name ?? 'APIForge'}</h2>
-              <Badge tone="outline">⌘K</Badge>
+      {/* 2. Secondary Explorer Sidebar (Collections/Workspace details) */}
+      <div className={`h-full border-r border-border/60 bg-zinc-950/20 backdrop-blur-md flex-col shrink-0 transition-all duration-200 ${explorerCollapsed ? 'w-0 overflow-hidden' : 'w-72 flex'}`}>
+        {explorerPanel}
+      </div>
+
+      {/* 3. Main Workspace Area (Breadcrumbs, Toolbar, Viewport) */}
+      <main className="flex min-w-0 flex-1 flex-col h-full bg-[radial-gradient(ellipse_at_top,_var(--accent)/15%,_transparent_50%)]">
+        {/* Workspace Toolbar Header */}
+        <header className="flex h-14 items-center justify-between gap-4 border-b border-border/60 px-6 shrink-0 bg-background/50 backdrop-blur-xl">
+          <div className="flex items-center gap-3 min-w-0">
+            <button
+              onClick={() => setExplorerCollapsed(!explorerCollapsed)}
+              className="text-muted-foreground hover:text-foreground p-1 rounded hover:bg-accent/40 transition-all shrink-0"
+              title="Toggle Explorer Sidebar"
+            >
+              <FolderTree className="size-4" />
+            </button>
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground truncate">
+              <span>APIForge</span>
+              <ChevronRight className="size-3 shrink-0" />
+              <span className="font-semibold text-foreground/80 truncate">{activeWorkspace?.name ?? 'Loading…'}</span>
+              {location.pathname.includes('/request/') && (
+                <>
+                  <ChevronRight className="size-3 shrink-0" />
+                  <span className="font-mono text-primary truncate">Active Request</span>
+                </>
+              )}
             </div>
           </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <span>Keyboard-ready</span>
+          
+          <div className="flex items-center gap-4">
+            {/* Active Environment Indicator Selector */}
+            <div className="flex items-center gap-2 rounded-lg border border-border/80 bg-background/40 px-2.5 py-1 text-xs">
+              <Database className="size-3.5 text-primary" />
+              <span className="text-muted-foreground/80 font-medium select-none">Env:</span>
+              <select 
+                className="bg-transparent border-none text-foreground font-semibold outline-none cursor-pointer pr-1"
+                value={activeEnv}
+                onChange={(e) => setActiveEnv(e.target.value)}
+              >
+                <option value="Development" className="bg-popover text-foreground">Development</option>
+                <option value="Staging" className="bg-popover text-foreground">Staging</option>
+                <option value="Production" className="bg-popover text-foreground">Production</option>
+              </select>
+            </div>
           </div>
         </header>
 
-        <div className="grid flex-1 gap-4 p-4 xl:grid-cols-[280px_minmax(0,1fr)_340px]">
-          <section className="min-w-0">
-            <Outlet />
-          </section>
-
-          <section className="min-w-0">{middlePanel}</section>
-
-          <section className="min-w-0">
-            <Card className="h-full border-border/80 bg-card/80">
-              <CardHeader>
-                <CardTitle>Workspace Overview</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="rounded-2xl border border-border bg-background/70 p-4">
-                  <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Status</p>
-                  <p className="mt-1 text-sm">{workspaceQuery.isLoading ? 'Loading workspace…' : 'Ready for requests'}</p>
-                </div>
-                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
-                  <div className="rounded-2xl border border-border bg-background/70 p-4">
-                    <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Members</p>
-                    <p className="mt-1 text-2xl font-semibold">{workspaceQuery.data?.memberCount ?? 0}</p>
-                  </div>
-                  <div className="rounded-2xl border border-border bg-background/70 p-4">
-                    <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Requests</p>
-                    <p className="mt-1 text-2xl font-semibold">{workspaceQuery.data?.requestCount ?? 0}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </section>
+        {/* Viewport Content */}
+        <div className="flex-1 overflow-y-auto">
+          <Outlet />
         </div>
       </main>
+      
     </div>
   )
 }
